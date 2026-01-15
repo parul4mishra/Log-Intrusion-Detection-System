@@ -5,7 +5,8 @@
 
 ### Option 1: Using Docker directly
 ```bash
-docker build -t log-alert-system:latest .
+docker build -t intrusion-detector .
+
 ```
 
 ### Option 2: Using Docker Compose
@@ -21,9 +22,8 @@ mkdir logs
 ```bash
 touch logs/application.log
 ```
- The application reads and processes all log files present in `/logs` during startup.
-- Detection rules are applied once when the application starts.
-- For simplicity, real-time log tailing is not implemented.
+The application reads and processes all log files present in `/logs` during startup.
+Detection rules are applied once at application startup by processing all log files present in /logs.
 
 To trigger detection:
 1. Populate `logs/application.log`
@@ -60,15 +60,14 @@ LogSource → LogParser → DetectionService → DetectionRules → AlertService
 The system is designed as a modular pipeline, allowing each stage to evolve independently:
 
 - **Single Responsibility**
-    Each stage has a single responsibility to perform , decoupled from each other.
-  
+    Each stage has a single responsibility and is decoupled from the others.  
 - **Log Sources**
     The ingestion layer abstracts log sources via a `LogSource` interface.
-    New sources (e.g. S3, Kafka, HTTP) can be added without impacting parsing or detection.
+    New sources in future, can be added without impacting parsing or detection.
 
 - **Log Parsing**
    Parsing is handled by pluggable `LogParser` implementations.
-   Multiple log formats from different services or teams can be supported by adding new parsers.
+   Multiple log formats from different services  can be supported by adding new parsers.
 
 - **Detection Rules**
   Detection logic is implemented as independent rules following a common contract.
@@ -105,6 +104,10 @@ The system is designed as a modular pipeline, allowing each stage to evolve inde
   log formats evolve or unexpected input is encountered.   
                              
 
+
+
+*Note: An LLM was used as a productivity aid for refining documentation
+and validating design ideas.*
 
 
 
