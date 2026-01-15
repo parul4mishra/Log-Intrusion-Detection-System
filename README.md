@@ -1,3 +1,4 @@
+
 # Log-Based Intrusion Detection & Alerting System
 
 ## Building the Docker Image
@@ -53,30 +54,42 @@ This project is designed as a log-based intrusion detection system  that process
 The architecture follows a pipeline-based, modular design:
 
 LogSource → LogParser → DetectionService → DetectionRules → AlertService → REST API
-Each stage has a single responsibility and can be independently extended or replaced.
 
-- ## Design Choices
+- ** Design Choices**
 
-- **Rule-based detection engine**
-  Detection logic is implemented as independent rules (e.g., brute-force, SQL injection),
-  allowing new attack patterns to be added without changing the core pipeline.
+The system is designed as a modular pipeline, allowing each stage to evolve independently:
 
-- **Structured alert model (actor / target)**
-  Alerts explicitly separate the attacker (actor, e.g., IP) from the affected system
-  (target, e.g., service), making the model generic across different log sources.
+- **Single Responsibility**
+    Each stage has a single responsibility to perform , decoupled from each other.
+  
+- **Log Sources**
+    The ingestion layer abstracts log sources via a `LogSource` interface.
+    New sources (e.g. S3, Kafka, HTTP) can be added without impacting parsing or detection.
 
+- **Log Parsing**
+   Parsing is handled by pluggable `LogParser` implementations.
+   Multiple log formats from different services or teams can be supported by adding new parsers.
+
+- **Detection Rules**
+  Detection logic is implemented as independent rules following a common contract.
+  New attack types can be added without modifying existing rules.
+
+- **Alert Model**
+  Alerts use a generic `actor / target` structure, making them reusable across services and attack types.
+  
 - **Single-pass log file processing**
-  Logs are processed sequentially from a mounted file on application startup.
-  This ensures deterministic behavior, simplicity, and avoids state synchronization issues.
+   Logs are processed sequentially from a mounted file on application startup.
+   This ensures deterministic behavior, simplicity.
 
+ This design allows the system to start simple while supporting incremental complexity as requirements evolve.
 
 ## Trade-offs
 
 - **Startup-time processing vs real-time detection**
   Logs are analyzed on application startup rather than streamed in real time.
   This simplifies the design but delays detection until logs are processed.
-
-- **File-based ingestion vs log pipelines**
+  
+  - **File-based ingestion vs log pipelines**
   Reading from a mounted log file avoids external dependencies but does not scale
   as well as Kafka / Fluentd–based ingestion.
 
@@ -88,10 +101,9 @@ Each stage has a single responsibility and can be independently extended or repl
 
 - Structured logs with consistent prefixes (log.ingestion.*, parser.parse.*, rule.evaluation.*) to enable log-based debugging.
 - Trace ID propagation across ingestion → rule evaluation → alert generation for correlating events.
-
+- Failures are explicitly logged and never halt the pipeline, ensuring graceful degradation and easy debugging when
+  log formats evolve or unexpected input is encountered.   
                              
-
-
 
 
 
