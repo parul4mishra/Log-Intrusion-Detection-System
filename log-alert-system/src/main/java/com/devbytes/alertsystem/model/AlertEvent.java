@@ -8,8 +8,9 @@ import lombok.Getter;
 public class AlertEvent {
 
 	private final String type;
-	private final String source;
-	private final String description;
-	private final long timestamp;
+    private final Actor actor;
+    private final Target target;
+    private final String description;
+    private final long timestamp;
 
 }
