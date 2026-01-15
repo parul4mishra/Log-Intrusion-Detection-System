@@ -55,7 +55,7 @@ The architecture follows a pipeline-based, modular design:
 
 LogSource → LogParser → DetectionService → DetectionRules → AlertService → REST API
 
-- ** Design Choices**
+ ## Design Choices**
 
 The system is designed as a modular pipeline, allowing each stage to evolve independently:
 
@@ -89,7 +89,7 @@ The system is designed as a modular pipeline, allowing each stage to evolve inde
   Logs are analyzed on application startup rather than streamed in real time.
   This simplifies the design but delays detection until logs are processed.
   
-  - **File-based ingestion vs log pipelines**
+- **File-based ingestion vs log pipelines**
   Reading from a mounted log file avoids external dependencies but does not scale
   as well as Kafka / Fluentd–based ingestion.
 
