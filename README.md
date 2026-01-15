@@ -84,13 +84,13 @@ The system is designed as a modular pipeline, allowing each stage to evolve inde
 
 ## Trade-offs
 
-- **Startup-time processing vs real-time detection**
+- **Startup-time processing**
   Logs are analyzed on application startup rather than streamed in real time.
   This simplifies the design but delays detection until logs are processed.
   
-- **File-based ingestion vs log pipelines**
-  Reading from a mounted log file avoids external dependencies but does not scale
-  as well as Kafka / Fluentd–based ingestion.
+- **File-based ingestion**
+  Simple and dependency-free, but not intended for high-volume
+  or real-time log processing.
 
 - **Simple pattern-based rules vs deep parsing**
   Detection rules rely on structured fields and lightweight pattern checks,
