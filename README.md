@@ -55,7 +55,7 @@ The architecture follows a pipeline-based, modular design:
 
 LogSource → LogParser → DetectionService → DetectionRules → AlertService → REST API
 
- ## Design Choices**
+ ## Design Choices
 
 The system is designed as a modular pipeline, allowing each stage to evolve independently:
 
