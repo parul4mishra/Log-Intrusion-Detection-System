@@ -1,9 +1,11 @@
 package com.devbytes.alertsystem.detection;
 
 import com.devbytes.alertsystem.detection.DetectionRules;
+import com.devbytes.alertsystem.model.Actor;
 import com.devbytes.alertsystem.model.AlertEvent;
 import com.devbytes.alertsystem.model.LogEvent;
 import com.devbytes.alertsystem.model.LogLevel;
+import com.devbytes.alertsystem.model.Target;
 import com.devbytes.alertsystem.service.AlertService;
 
 import java.util.Deque;
@@ -60,7 +62,7 @@ public class BruteForceAuthRule implements DetectionRules {
         cleanupOldAttempts(attempts, eventTime);
 
         if (attempts.size() >= MAX_ATTEMPTS && shouldAlert(ip, eventTime)) {
-            raiseAlert(ip, attempts.size());
+            raiseAlert(event, ip, attempts.size());
             lastAlertTimeByIp.put(ip, eventTime);
         }
     }
@@ -101,16 +103,27 @@ public class BruteForceAuthRule implements DetectionRules {
 
 
     
-    private void raiseAlert(String ip, int attemptCount) {
-    	
-    	String description = attemptCount+" failed login attempts from IP:"+ ip+"  within " +WINDOW_MS / 1000+" seconds. ";
+    private void raiseAlert(LogEvent event, String ip, int attemptCount) {
 
-    	AlertEvent alert = new AlertEvent(
-    	        "BRUTE_FORCE_AUTH",
-    	        ip,
-    	        description,
-    	        System.currentTimeMillis()
-    	    );
+        Actor actor = new Actor("IP", ip);
+
+        String serviceName =
+                event.getSource() != null ? event.getSource() : "unknown-service";
+
+        Target target = new Target(serviceName);
+
+        String description = attemptCount +
+                " failed login attempts within " +
+                (WINDOW_MS / 1000) +
+                " seconds";
+
+        AlertEvent alert = new AlertEvent(
+                "BRUTE_FORCE_AUTH",
+                actor,
+                target,
+                description,
+                System.currentTimeMillis()
+        );
 
         alertService.publish(alert);
     }
