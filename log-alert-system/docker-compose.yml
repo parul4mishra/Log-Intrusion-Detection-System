@@ -3,16 +3,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: log-alert-system
+    container_name: intrusion-detector
     ports:
       - "8080:8080"
     volumes:
       # Mount logs directory for the application to read
       - ./logs:/logs
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    
