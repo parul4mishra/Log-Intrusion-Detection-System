@@ -15,8 +15,7 @@ docker-compose build
 ```
 ## Running the Application
 
-Prepare logs directory
-1.Create a logs folder next to the project:
+Prepare logs directory and add the logs
 ```bash
 mkdir logs
 ```
@@ -89,8 +88,8 @@ Each stage has a single responsibility and can be independently extended or repl
 
 ## Observability & Debugging 
 
-Structured logs with consistent prefixes (log.ingestion.*, parser.parse.*, rule.evaluation.*) to enable log-based debugging.
-Trace ID propagation across ingestion → rule evaluation → alert generation for correlating events.
+- Structured logs with consistent prefixes (log.ingestion.*, parser.parse.*, rule.evaluation.*) to enable log-based debugging.
+- Trace ID propagation across ingestion → rule evaluation → alert generation for correlating events.
 
                              
 
