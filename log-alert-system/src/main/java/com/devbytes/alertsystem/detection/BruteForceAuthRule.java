@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class BruteForceAuthRule implements DetectionRules {
 	
 	/**
@@ -71,7 +74,7 @@ public class BruteForceAuthRule implements DetectionRules {
 
         Map<String, String> attrs = event.getAttributes();
 
-        String eventType = attrs.get("eventType");
+        String eventType = attrs.get("event");
         String statusCode = attrs.get("statusCode");
 
         return "AUTH_FAILURE".equals(eventType)
@@ -100,13 +103,7 @@ public class BruteForceAuthRule implements DetectionRules {
     
     private void raiseAlert(String ip, int attemptCount) {
     	
-    	String description = String.format(
-    	        "Brute force authentication attempt detected from IP %s: " +
-    	        "%d failed login attempts within %d seconds. " +
-    	        ip,
-    	        attemptCount,
-    	        WINDOW_MS / 1000
-    	    );
+    	String description = attemptCount+" failed login attempts from IP:"+ ip+"  within " +WINDOW_MS / 1000+" seconds. ";
 
     	AlertEvent alert = new AlertEvent(
     	        "BRUTE_FORCE_AUTH",
