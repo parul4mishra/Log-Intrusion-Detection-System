@@ -1,7 +1,5 @@
 # Log-Based Intrusion Detection & Alerting System
 
-# Docker Setup for Log Alert System
-
 ## Building the Docker Image
 
 ### Option 1: Using Docker directly
