@@ -1,0 +1,42 @@
+2026-01-14T12:29:55Z INFO auth-service event=PAGE_VIEW statusCode=200 ip=192.168.1.10 message="Login page loaded"
+2026-01-14T12:29:58Z ERROR user-service event=SQL_ERROR statusCode=500 ip=192.168.1.20 query="SELECT * FROM users WHERE name='' OR 1=1" message="Query failed"
+
+
+2026-01-14T12:30:01Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=192.168.1.10 message="Invalid password"
+2026-01-14T12:30:06Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=192.168.1.10 message="Invalid password"
+2026-01-14T12:30:11Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=192.168.1.10 message="Invalid password"
+2026-01-14T12:30:16Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=192.168.1.10 message="Invalid password"
+2026-01-14T12:30:21Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=192.168.1.10 message="Invalid password"
+
+2026-01-14T12:30:25Z INFO auth-service event=AUTH_SUCCESS action=LOGIN result=SUCCESS statusCode=200 ip=192.168.1.10 message="Login successful"
+
+2026-01-14T12:30:30Z ERROR user-service event=SQL_ERROR statusCode=500 ip=192.168.1.20 query="SELECT * FROM users WHERE name='' OR 1=1" message="Query failed"
+2026-01-14T12:30:35Z ERROR user-service event=SQL_ERROR statusCode=500 ip=192.168.1.20 query="SELECT * FROM users WHERE name='' OR 1=1" message="Query failed"
+
+
+2026-01-14T12:31:00Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=10.0.0.5 message="Invalid credentials"
+2026-01-14T12:31:05Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=10.0.0.5 message="Invalid credentials"
+2026-01-14T12:31:10Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=10.0.0.5 message="Invalid credentials"
+2026-01-14T12:31:15Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=10.0.0.5 message="Invalid credentials"
+2026-01-14T12:31:20Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=401 ip=10.0.0.5 message="Invalid credentials"
+
+
+2026-01-14T12:32:10Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=403 ip=172.16.0.9 message="Account locked"
+2026-01-14T12:32:15Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=403 ip=172.16.0.9 message="Account locked"
+2026-01-14T12:32:20Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=403 ip=172.16.0.9 message="Account locked"
+2026-01-14T12:32:25Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=403 ip=172.16.0.9 message="Account locked"
+2026-01-14T12:32:30Z ERROR auth-service event=AUTH_FAILURE action=LOGIN result=FAILURE statusCode=403 ip=172.16.0.9 message="Account locked"
+
+
+2026-01-14T12:33:00Z ERROR user-service event=SQL_ERROR statusCode=500 ip=192.168.1.20 query="SELECT * FROM users WHERE name='' OR 1=1" message="Query failed"
+
+2026-01-14T12:33:10Z ERROR user-service event=SQL_ERROR statusCode=500 ip=192.168.1.21 query="SELECT id FROM accounts UNION SELECT password FROM users" message="Query failed"
+
+2026-01-14T12:33:20Z ERROR user-service event=SQL_ERROR statusCode=500 ip=192.168.1.22 query="SELECT * FROM orders WHERE id=1 OR 1=1" message="Query failed"
+
+
+2026-01-14T12:33:30Z INFO user-service event=SQL_SUCCESS statusCode=200 ip=192.168.1.23 query="SELECT * FROM users WHERE name='john'" message="Query executed successfully"
+
+
+2026-01-14T12:34:00Z DEBUG system-service event=HEARTBEAT statusCode=200 message="Heartbeat check ok"
+
