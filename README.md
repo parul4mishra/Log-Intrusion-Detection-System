@@ -16,9 +16,13 @@ docker-compose build
 ## Running the Application
 
 Prepare logs directory
-Create a logs folder next to the project:
+1.Create a logs folder next to the project:
+```bash
 mkdir logs
+```
+```bash
 touch logs/application.log
+```
  The application reads and processes all log files present in `/logs` during startup.
 - Detection rules are applied once when the application starts.
 - For simplicity, real-time log tailing is not implemented.
@@ -46,7 +50,7 @@ Once running, the application will be available at:
 - Application: http://localhost:8080
 - Logs are read from /logs/application.log
 
-###Architecture Design & Reasoning
+## Architecture Design & Reasoning
 
 This project is designed as a log-based intrusion detection system  that processes application logs, applies security detection rules, and exposes detected alerts over HTTP.
 The architecture follows a pipeline-based, modular design:
