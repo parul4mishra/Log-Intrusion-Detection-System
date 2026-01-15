@@ -4,7 +4,10 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.devbytes.alertsystem.model.LogEvent;
@@ -13,29 +16,56 @@ import com.devbytes.alertsystem.model.LogLevel;
 @Component
 public class DefaultFormatLogParser implements LogParser {
 	
-	@Override
-	public boolean supports(String rawLine) {
-		return true;
-	}
+	 private static final Logger log = LoggerFactory.getLogger(DefaultFormatLogParser.class);
+	
+		@Override
+		public boolean isParseble(String rawLine) {
+			if (rawLine == null || rawLine.isBlank()) {
+				return false;
+			}
+			//return rawLine.matches("^\\d{4}-\\d{2}-\\d{2}T.*");
+		    return true;
 
-	//2026-01-14T12:30:22Z ERROR AUTH_401 Login failed ip=192.168.1.10 user=john
-    //192.168.1.10 - - [14/Jan/2026:10:15:32 +0000] "POST /login HTTP/1.1" 401 234
-	//{"timestamp":"2026-01-14T10:15:32Z","level":"ERROR","msg":"Login failed","ip":"192.168.1.10"}
-	private Map<String, String> attributes = new HashMap<>();
-
+		}
+	
 
 	@Override
 	public LogEvent parse(String rawLine) {
 
-		String[] parts = rawLine.split(" ", 4);
+		log.debug("log.parser.parse.start rawLine='{}'", rawLine);
 
-		long timestamp = Instant.parse(parts[0]).toEpochMilli();
-		LogLevel level = LogLevel.valueOf(parts[1]);
+		try {
+			String[] parts = rawLine.split(" ", 4);
 
-		String rest = parts[3];
-		String message = extractMessageAndAttributes(rest, attributes);
+			long timestamp = Instant.parse(parts[0]).toEpochMilli();
+			LogLevel level = LogLevel.valueOf(parts[1]);
+			String source = parts[2];
 
-		return new LogEvent(level, message, timestamp, "application-log", attributes);
+			String rest = parts.length > 3 ? parts[3] : "";
+			Map<String, String> attributes = new HashMap<>();
+
+			String traceId = UUID.randomUUID().toString();
+			attributes.put("traceId", traceId);
+
+			String message = extractMessageAndAttributes(rest, attributes);
+			log.debug("log.parser.parse.success traceId={} level={} message={}", traceId, level, message);
+
+			return new LogEvent(level, message, timestamp, source, attributes);
+			
+		} catch (Exception e) {
+			log.warn("log.parser.parse.failed rawLine='{}' error={}", rawLine, e.getMessage());
+			return fallbackEvent(rawLine);
+		}
+	}
+
+	private LogEvent fallbackEvent(String rawLine) {
+		 return new LogEvent(
+                    LogLevel.UNKNOWN,
+                    rawLine,
+                    Instant.now().toEpochMilli(),
+                    "unknown",
+                    Map.of("traceId", UUID.randomUUID().toString())
+                );
 	}
 
 	private String extractMessageAndAttributes(String text, Map<String, String> attributes) {
@@ -53,9 +83,7 @@ public class DefaultFormatLogParser implements LogParser {
 		return msg.toString().trim();
 	}
 	
-	public Optional<String> getAttribute(String key) {
-	    return Optional.ofNullable(attributes.get(key));
-	}
+	
 
 
 }
